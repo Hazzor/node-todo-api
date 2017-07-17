@@ -31,7 +31,7 @@ app.get('/todos', (req, res)=> {
     Todo.find().then((todos)=>{
 
         res.send({
-            todos : todos,
+            todosArray : todos,
             code : 200
         });
     }, (e)=>{
