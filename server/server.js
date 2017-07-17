@@ -9,11 +9,12 @@ var {User} = require('./models/user');
 var app = express();
 
 // middleware parser type
-app.use(bodyParser.text());
+// app.use(bodyParser.text());
 app.use(bodyParser.json());
 
 // receive post from client and create path todos
 app.post('/todos', (req,res)=> {
+    // instantiate Todo model prototype
     var todo = new Todo({
         text : req.body.text
     });
@@ -29,6 +30,10 @@ app.post('/todos', (req,res)=> {
 app.listen(3000, ()=> {
     console.log('Started on port 3000');
 });
+
+module.exports = {
+    app : app
+}
 
 // var date = new Date();
 // var day = date.getDate();
