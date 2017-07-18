@@ -34,7 +34,7 @@ describe('POST /todos', ()=>{
 
         request(app)
             .post('/todos')
-            .send({text}) //send as variable, not as string
+            .send({text : text}) //send as variable, not as string
             .expect(200)
             .expect((res)=>{
                 expect(res.body.text).toBe(text);
@@ -86,8 +86,9 @@ describe('GET /todos', ()=>{
         .get('/todos')
         .expect(200)
         .expect((res)=>{
-            expect(res.body.todos.length).toBe(2);
+            expect(res.body.todosArray.length).toBe(2);
+            expect(res.body.code).toBe(200);
         })
         .end(done);
-    })
-})
+    });
+});
