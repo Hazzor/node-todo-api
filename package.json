@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server/server.js",
     "test": "mocha server/**/*.test.js ",
     "test-watch" : "nodemon --exec \"npm test\""
   },
-  "author": "",
+  "engine":{
+    "node" : "8.1.2"
+  },
+  "author": "Hester",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
