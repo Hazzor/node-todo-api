@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.post('/todos', (req,res)=> {
     // instantiate Todo model prototype
     var todo = new Todo({
-        text : req.body.text
+        text : req.body.text1
     });
 
     todo.save().then((doc)=>{
