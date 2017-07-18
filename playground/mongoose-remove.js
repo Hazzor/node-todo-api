@@ -18,8 +18,8 @@ const {User} = require('./../server/models/user');
 
 // });
 
-// Todo.findOneAndRemove({_id : '596d8cde2f1e522c4cefe48f' }).then((todo)=>{
+Todo.findOneAndRemove({_id : '596d8cde2f1e522c4cefe48f' }).then((todo)=>{
    
-//     console.log(todo);
+    console.log(todo);
 
-// });
+});
