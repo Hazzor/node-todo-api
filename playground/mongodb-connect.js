@@ -3,12 +3,6 @@
 // object destructuring es6
 const {MongoClient, ObjectID} = require('mongodb');
 
-// var test = {
-//     name : 'hester'
-// }
-// var {name} = test;
-// console.log(name);
-
 var obj = new ObjectID();
 console.log(obj);
 
