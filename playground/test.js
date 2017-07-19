@@ -1,8 +1,8 @@
 user = {
     name : 'hester',
     function : function haha(){
-                    var user = this;
-                    user.name = 'hazzore';
+                    // var user = this;
+                    this.name = 'hazzore';
                     
                 }
 }

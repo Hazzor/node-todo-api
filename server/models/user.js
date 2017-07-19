@@ -34,7 +34,7 @@ var UserSchema = new mongoose.Schema({
     }]
 });
 
-//overwrite existing fx
+//overwrite existing fx, method is instance method
 UserSchema.methods.toJSON = function (){
     var user = this;
     var userObject = user.toObject();
@@ -53,6 +53,31 @@ UserSchema.methods.generateAuthToken = function () {
 // put return so that this fx return a promise
      return user.save().then(()=>{
         return token;
+    });
+};
+
+
+// static is model method
+UserSchema.statics.findByToken = function (token) {
+    var User = this;
+    var decoded;
+
+    try {
+        decoded = jwt.verify(token, '123abc');
+    } catch (e) {
+        //must return promise for both happy and sad case
+        return Promise.reject();
+
+        // return new Promise ((resolve,reject)=>{
+        //     reject();
+        // });
+
+    }
+
+    return User.findOne({
+        '_id' : decoded._id,
+        'tokens.token' : token,
+        'tokens.access' : 'auth'
     });
 };
 

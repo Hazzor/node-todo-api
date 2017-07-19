@@ -5,13 +5,12 @@ var data = {
     id : 20
 }
 
-var token = jwt.sign(data, 'salt').toString();
-console.log(typeof token);
+var token = jwt.sign(data, 'salt');
+console.log(token);
 
-jwt.sign(data, 'salt' , function(err, token) {
-    // var haha = token.toString();
-  console.log(typeof token);
-});
+// jwt.sign(data, 'salt' , function(err, token) {
+//     // var haha = token.toString();
+// });
 
 // var decodedResult = jwt.verify(token, 'salt', (err, decoded)=>{
 //     if(err) {
@@ -20,8 +19,8 @@ jwt.sign(data, 'salt' , function(err, token) {
 //     console.log('Decoded : ', decoded);
 // });
 
-// var decodedResult = jwt.verify(token, 'salt');
-// console.log('Decoded2 : ', decodedResult);
+var decodedResult = jwt.verify(token, 'salt');
+console.log('Decoded : ', decodedResult);
 
 
 // var message = "I am user number 3";
