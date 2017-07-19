@@ -1,26 +1,44 @@
 const {SHA256} = require('crypto-js');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-var data = {
-    id : 20
-}
+var password = '123abc';
 
-var token = jwt.sign(data, 'salt');
-console.log(token);
+bcrypt.genSalt(10, (err,salt) =>{
+    bcrypt.hash(password, salt, (err,hash)=>{
+        console.log(hash);
+    })
+});
 
-// jwt.sign(data, 'salt' , function(err, token) {
-//     // var haha = token.toString();
-// });
+var hashedPassword = '$2a$10$kvnFVWce8npxXU5/x6aOn.pxYqpwhddzwXq83BfJW.5AE6bVSgpVm';
 
-// var decodedResult = jwt.verify(token, 'salt', (err, decoded)=>{
-//     if(err) {
-//          return console.log('You motherfucker change your ID!!');
-//     }
-//     console.log('Decoded : ', decoded);
-// });
+bcrypt.compare(password, hashedPassword, (err,res)=>{
+    console.log(res);
+})
 
-var decodedResult = jwt.verify(token, 'salt');
-console.log('Decoded : ', decodedResult);
+
+
+// var data = {
+//     id : 20
+// }
+
+
+// var token = jwt.sign(data, 'salt');
+// console.log(token);
+
+// // jwt.sign(data, 'salt' , function(err, token) {
+// //     // var haha = token.toString();
+// // });
+
+// // var decodedResult = jwt.verify(token, 'salt', (err, decoded)=>{
+// //     if(err) {
+// //          return console.log('You motherfucker change your ID!!');
+// //     }
+// //     console.log('Decoded : ', decoded);
+// // });
+
+// var decodedResult = jwt.verify(token, 'salt');
+// console.log('Decoded : ', decodedResult);
 
 
 // var message = "I am user number 3";

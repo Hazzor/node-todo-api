@@ -10,6 +10,7 @@ var authenticate = (req,res,next) =>{
             // will run catch block
         }
 
+        //modify req object
         req.user = user;
         req.token = token;
         next();
