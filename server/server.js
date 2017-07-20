@@ -16,11 +16,12 @@ const port = process.env.PORT;
 // app.use(bodyParser.text());
 app.use(bodyParser.json());
 
-// receive post from client and create path todos
-app.post('/todos', (req,res)=> {
+// client post todo with token
+app.post('/todos', authenticate, (req,res)=> {
     // instantiate Todo model prototype
     var todo = new Todo({
-        text : req.body.text
+        text : req.body.text,
+        _creator : req.user._id
     });
 
     todo.save().then((doc)=>{
@@ -31,8 +32,11 @@ app.post('/todos', (req,res)=> {
     console.log(req.body);
 });
 
-app.get('/todos', (req, res)=> {
-    Todo.find().then((todos)=>{
+// get all todos
+app.get('/todos', authenticate , (req, res)=> {
+    Todo.find({
+        _creator : req.user._id
+    }).then((todos)=>{
 
         res.send({
             todosArray : todos,
@@ -44,14 +48,18 @@ app.get('/todos', (req, res)=> {
     });
 });
 
-app.get('/todos/:id', (req,res)=>{
+// get todo based on id
+app.get('/todos/:id', authenticate , (req,res)=>{
     var id = req.params.id;
     if(!ObjectID.isValid(id)){
         res.status(400).send('Todo ID invalid');
     }
     else {
 
-        Todo.findById(id).then((todo)=>{
+        Todo.findOne({
+            _id : id,
+            _creator : req.user._id
+            }).then((todo)=>{
             if(!todo){
                 
                 return res.status(404).send('Todo not found');
@@ -63,7 +71,8 @@ app.get('/todos/:id', (req,res)=>{
     }
 });
 
-app.delete('/todos/:id', (req,res)=>{
+//delete todo based on id
+app.delete('/todos/:id', authenticate , (req,res)=>{
     var id = req.params.id;
     if(!ObjectID.isValid(id)) {
         res.status(400).send('Todo ID invalid');
@@ -71,7 +80,10 @@ app.delete('/todos/:id', (req,res)=>{
 
     else {
 
-        Todo.findByIdAndRemove(id).then((todo)=>{
+        Todo.findOneAndRemove({
+            _id : id,
+            _creator : req.user._id
+        }).then((todo)=>{
             if(!todo){
                 
                 return res.status(404).send('Todo not found');
@@ -83,7 +95,8 @@ app.delete('/todos/:id', (req,res)=>{
     }
 });
 
-app.patch('/todos/:id', (req,res)=>{
+//update todo based on id
+app.patch('/todos/:id', authenticate, (req,res)=>{
     var id = req.params.id;
     //choose only ones that are provided and move to body
     var body = _.pick(req.body, ['text', 'completed']);
@@ -99,7 +112,13 @@ app.patch('/todos/:id', (req,res)=>{
         body.completeAt = null;
     }
 
-    Todo.findByIdAndUpdate(id, {$set : body}, {new : true}).then((todo)=>{
+    Todo.findOneAndUpdate({
+        _id : id,
+        _creator : req.user._id },
+        {$set : body },
+        {new : true }
+    )
+        .then((todo)=>{
         if(!todo) {
             return res.status(404).send('Update failed');
         }
@@ -112,6 +131,7 @@ app.patch('/todos/:id', (req,res)=>{
     });
 });
 
+//register user
 app.post('/users', (req,res)=> {
 
     var body = _.pick(req.body, ['email', 'password']);
@@ -130,11 +150,12 @@ app.post('/users', (req,res)=> {
     });
 });
 
-//private route
+//private route for individual user
 app.get('/users/me', authenticate, (req,res)=>{
     res.status(200).send(req.user);
 });
 
+//login
 app.post('/users/login' ,(req,res)=>{
 
     var body = _.pick(req.body, ['email', 'password']);
@@ -150,6 +171,7 @@ app.post('/users/login' ,(req,res)=>{
 
 });
 
+//logout
 app.delete('/users/me/token' , authenticate , (req,res)=>{
     req.user.removeToken(req.token).then(()=>{
         res.status(200).send('Succesfully logout');

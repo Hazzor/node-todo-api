@@ -19,6 +19,7 @@ var authenticate = (req,res,next) =>{
         // res.send(user);
 
     }).catch((e)=>{
+        //unauthorized
         res.status(401).send();
     });
 };

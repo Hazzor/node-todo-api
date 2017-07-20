@@ -80,7 +80,7 @@ UserSchema.statics.findByCredentials = function (email, password) {
 UserSchema.methods.removeToken = function (token) {
     var user = this;
 
-    // delete tokens in array if token match the value we provide
+    // delete object in tokens if token match the value we provide
     return user.update({
         $pull : {
             tokens : {
