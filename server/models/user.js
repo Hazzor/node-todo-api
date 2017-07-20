@@ -77,6 +77,19 @@ UserSchema.statics.findByCredentials = function (email, password) {
     })
 };
 
+UserSchema.methods.removeToken = function (token) {
+    var user = this;
+
+    // delete tokens in array if token match the value we provide
+    return user.update({
+        $pull : {
+            tokens : {
+                token : token
+            }
+        }
+    });
+}
+
 
 // static is model method
 UserSchema.statics.findByToken = function (token) {

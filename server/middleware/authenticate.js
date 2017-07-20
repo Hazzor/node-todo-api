@@ -10,7 +10,7 @@ var authenticate = (req,res,next) =>{
             // will run catch block
         }
 
-        //modify req object
+        //modify req object so that every request in future can be trace
         req.user = user;
         req.token = token;
         next();
