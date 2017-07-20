@@ -27,7 +27,7 @@ bcrypt.compare(password, hashedPassword, (err,res)=>{
 // console.log(token);
 
 // // jwt.sign(data, 'salt' , function(err, token) {
-// //     // var haha = token.toString();
+// //     // var haha = token;
 // // });
 
 // // var decodedResult = jwt.verify(token, 'salt', (err, decoded)=>{

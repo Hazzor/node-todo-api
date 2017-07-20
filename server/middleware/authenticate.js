@@ -16,7 +16,7 @@ var authenticate = (req,res,next) =>{
         next();
         //only execute if token is matched
 
-        res.send(user);
+        // res.send(user);
 
     }).catch((e)=>{
         res.status(401).send();

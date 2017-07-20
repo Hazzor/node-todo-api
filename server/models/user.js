@@ -82,7 +82,7 @@ UserSchema.statics.findByToken = function (token) {
     });
 };
 
-// mongoose middleware, run before any method
+// mongoose middleware, run before save
 UserSchema.pre('save', function(next) {
     var user = this;
 
@@ -90,7 +90,7 @@ UserSchema.pre('save', function(next) {
         bcrypt.genSalt(10, (err,salt)=>{
             bcrypt.hash(user.password , salt , (err,hash)=>{
                 user.password = hash;
-                next();
+                next(); //after next is save doc
             })
         })
     } else {
