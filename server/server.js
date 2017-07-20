@@ -130,9 +130,24 @@ app.post('/users', (req,res)=> {
     });
 });
 
-
+//private route
 app.get('/users/me', authenticate, (req,res)=>{
     res.status(200).send(req.user);
+});
+
+app.post('/users/login' ,(req,res)=>{
+
+    var body = _.pick(req.body, ['email', 'password']);
+
+    User.findByCredentials(body.email, body.password).then((user)=>{
+        return user.generateAuthToken().then((token)=>{
+            res.header('x-auth', token).send(user);
+        });
+
+    }).catch((e)=>{
+        res.status(400).send('Login failed : No user found');
+    })
+
 });
 
 app.listen(port, ()=> {
