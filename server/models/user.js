@@ -34,6 +34,8 @@ var UserSchema = new mongoose.Schema({
         }
     }]
 });
+// method : for document instance where i want to modify that current document (save, update, remove)
+// statics : for model where i want to perform query to a collection (find, remove)
 
 //overwrite existing fx, method is instance method
 UserSchema.methods.toJSON = function (){
@@ -47,7 +49,7 @@ UserSchema.methods.toJSON = function (){
 UserSchema.methods.generateAuthToken = function () {
     var user = this;
     var access = 'auth';
-    var token = jwt.sign({_id : user._id.toHexString(), access : access} , '123abc');
+    var token = jwt.sign({_id : user._id.toHexString(), access : access} , process.env.JWT_SECRET);
 
     user.tokens.push({access,token});
 
@@ -97,7 +99,7 @@ UserSchema.statics.findByToken = function (token) {
     var decoded;
 
     try {
-        decoded = jwt.verify(token, '123abc');
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (e) {
         //must return promise for both happy and sad case
         return Promise.reject();
